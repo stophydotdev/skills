@@ -3,13 +3,14 @@
   "groupings": [
     {
       "title": "YouTube",
-      "description": "Use Stophy CLI to search YouTube, get transcripts, read comments, inspect channels, and fetch playlists.",
+      "description": "Use Stophy CLI to search YouTube, get transcripts, read comments and live chat, inspect channels, and fetch playlists.",
       "skills": [
         "stophy-cli",
         "stophy-search",
         "stophy-video",
         "stophy-transcript",
         "stophy-comments",
+        "stophy-livechat",
         "stophy-channel",
         "stophy-playlist"
       ]
