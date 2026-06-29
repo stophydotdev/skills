@@ -1,4 +1,4 @@
-# YouTube Data for AI Agents
+# YouTube context for AI agents
 
 [![skills.sh](https://skills.sh/b/stophydotdev/skills)](https://skills.sh/stophydotdev/skills)
 

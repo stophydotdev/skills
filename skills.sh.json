@@ -3,7 +3,7 @@
   "groupings": [
     {
       "title": "YouTube",
-      "description": "YouTube data for AI agents. Search YouTube, get transcripts, read comments and live chat, inspect channels, and fetch playlists \u2014 via Stophy CLI.",
+      "description": "YouTube context for AI agents. Search YouTube, get transcripts, read comments and live chat, inspect channels, and fetch playlists \u2014 via Stophy CLI.",
       "skills": [
         "youtube-for-ai",
         "youtube-search",
