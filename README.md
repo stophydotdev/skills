@@ -1,27 +1,48 @@
 # Stophy skills
 
 [![skills.sh](https://skills.sh/b/stophydotdev/skills)](https://skills.sh/stophydotdev/skills)
+[![smithery badge](https://smithery.ai/badge/stophy/mcp)](https://smithery.ai/servers/stophy/mcp)
 
-Agent skills for live public web data: search, video, social, places, shopping, apps, jobs, real estate, ad libraries, and finance. They run on [the Stophy CLI](https://www.npmjs.com/package/@stophy/cli).
+Live public web data for your AI agent: search, video, social, places, shopping, apps, jobs, real estate, ad libraries, and finance. This repo is a plugin with two parts:
+
+- The hosted Stophy MCP server, `https://api.stophy.dev/mcp-oauth`. It signs you in with your browser.
+- Eleven agent skills that run on [the Stophy CLI](https://www.npmjs.com/package/@stophy/cli).
 
 ## Install
 
-```bash
-npx skills add stophydotdev/skills
-```
-
-Or pick specific skills:
-
-```bash
-npx skills add stophydotdev/skills --skill stophy-web --skill stophy-video
-```
-
-As a Claude Code plugin:
+### Claude Code
 
 ```
 /plugin marketplace add stophydotdev/skills
-/plugin install stophy-skills
+/plugin install stophy@stophy
 ```
+
+### Cursor
+
+Install the Stophy plugin from the [Cursor Marketplace](https://cursor.com/marketplace). Sign in when Cursor opens the browser.
+
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/stophydotdev/skills
+```
+
+### Skills only
+
+Works with any agent that supports the Agent Skills format.
+
+```bash
+npx skills add stophydotdev/skills
+npx skills add stophydotdev/skills --skill stophy-web --skill stophy-video
+```
+
+### MCP server only
+
+```bash
+claude mcp add --transport http stophy https://api.stophy.dev/mcp-oauth
+```
+
+Or use `https://api.stophy.dev/mcp` with an `Authorization: Bearer <key>` header. Without a key, only the free tools work.
 
 ## Requirements
 
@@ -42,17 +63,17 @@ Treat the API key as a secret. Do not commit it, print it, or paste it into a sh
 
 | Skill | Covers |
 |-------|--------|
-| [`stophy`](./stophy/SKILL.md) | Setup, login, running any command, errors, and reporting a problem |
-| [`stophy-web`](./stophy-web/SKILL.md) | Web and news search, site maps and SEO, domain and email lookups, Google Trends |
-| [`stophy-video`](./stophy-video/SKILL.md) | YouTube, TikTok, and Kick: videos, transcripts, comments, channels |
-| [`stophy-social`](./stophy-social/SKILL.md) | Reddit, Instagram, X, Threads, Bluesky, Mastodon, Telegram, LinkedIn, Pinterest, Tumblr, Snapchat, Quora |
-| [`stophy-places`](./stophy-places/SKILL.md) | Google Maps, Tripadvisor, Airbnb, Google Flights |
-| [`stophy-shopping`](./stophy-shopping/SKILL.md) | Amazon, Walmart, AliExpress, Shopify stores |
-| [`stophy-apps`](./stophy-apps/SKILL.md) | App Store and Google Play listings and reviews |
-| [`stophy-jobs`](./stophy-jobs/SKILL.md) | Indeed, LinkedIn, and Upwork job postings |
-| [`stophy-real-estate`](./stophy-real-estate/SKILL.md) | Zillow, Redfin, Realtor.com, Rightmove, ImmoScout24 |
-| [`stophy-ads`](./stophy-ads/SKILL.md) | Meta, Google, TikTok, LinkedIn, Pinterest, Microsoft, and Snapchat ad libraries |
-| [`stophy-finance`](./stophy-finance/SKILL.md) | Stock quotes and history, crypto prices, DEX pairs, wallets |
+| [`stophy`](./skills/stophy/SKILL.md) | Setup, login, running any command, and errors |
+| [`stophy-web`](./skills/stophy-web/SKILL.md) | Web and news search, site maps and SEO, domain and email lookups, Google Trends |
+| [`stophy-video`](./skills/stophy-video/SKILL.md) | YouTube, TikTok, and Kick: videos, transcripts, comments, channels |
+| [`stophy-social`](./skills/stophy-social/SKILL.md) | Reddit, Instagram, X, Threads, Bluesky, Mastodon, Telegram, LinkedIn, Pinterest, Tumblr, Snapchat, Quora |
+| [`stophy-places`](./skills/stophy-places/SKILL.md) | Google Maps, Tripadvisor, Airbnb, Google Flights |
+| [`stophy-shopping`](./skills/stophy-shopping/SKILL.md) | Amazon, Walmart, AliExpress, Shopify stores |
+| [`stophy-apps`](./skills/stophy-apps/SKILL.md) | App Store and Google Play listings and reviews |
+| [`stophy-jobs`](./skills/stophy-jobs/SKILL.md) | Indeed, LinkedIn, and Upwork job postings |
+| [`stophy-real-estate`](./skills/stophy-real-estate/SKILL.md) | Zillow, Redfin, Realtor.com, Rightmove, ImmoScout24 |
+| [`stophy-ads`](./skills/stophy-ads/SKILL.md) | Meta, Google, TikTok, LinkedIn, Pinterest, Microsoft, and Snapchat ad libraries |
+| [`stophy-finance`](./skills/stophy-finance/SKILL.md) | Stock quotes and history, crypto prices, DEX pairs, wallets |
 
 ## For agents
 
