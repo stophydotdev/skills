@@ -1,115 +1,51 @@
 ---
 name: stophy-video
-description: Get everything about a single YouTube video with the Stophy CLI — metadata, transcript/captions, comments and replies, and live-stream chat. Trigger when the user provides a video URL or ID and wants details (title, channel, views, likes, duration), the transcript or spoken text, what viewers are saying in comments, replies in a thread, or live chat messages and stream status.
+description: |
+  Get YouTube, TikTok, and Kick data: search videos, read transcripts, comments, channels, playlists, and past streams or clips. Use for "get the transcript of", "what are people saying in the comments", "find videos about", "latest uploads from this channel", "past streams from this creator", "clips from this streamer". YouTube search and transcripts work without an API key. For posts on Reddit, X, or Instagram use stophy-social. For TikTok ad-library ads use stophy-ads.
 metadata:
   author: stophy
-  version: "2.0.0"
+  version: "3.0.0"
 allowed-tools:
   - Bash(stophy *)
-  - Bash(npx @stophy/cli *)
+  - Bash(npx -y @stophy/cli *)
 ---
 
-# stophy-video
+# stophy video
 
-Everything about one YouTube video, via `stophy video <type>`: **details**, **transcript**,
-**comments**, **replies**, and **livechat**. Stophy is a YouTube context API for AI agents;
-this skill covers the single-video surface.
+Search and read YouTube, TikTok, and Kick: videos, transcripts, comments, channels, playlists, streams.
 
-## Choose this skill when
+**Prerequisite:** `stophy youtube search` and `stophy youtube transcript` work without an API key. Everything else (video details, comments, channel, playlist, all of TikTok and Kick) needs `stophy login --browser` or `STOPHY_API_KEY`. See the stophy skill for setup.
 
-- The user gives a video URL or ID and wants metadata, transcript, comments, or live chat.
-- The user asks "what is this video?", "get the transcript", "what are people saying?",
-  or "show the live chat".
-
-For topic discovery use [stophy-search](../stophy-search/SKILL.md); for a creator's whole
-catalog use [stophy-channel](../stophy-channel/SKILL.md).
-
-## Safety
-
-- Always quote the URL: `--url "https://www.youtube.com/watch?v=..."`. YouTube URLs contain
-  `&`/`?`; unquoted they get split by the shell. Never place user input outside a quoted flag.
-- Do not fabricate transcripts, comments, or chat. Run the command and report what returns.
-
-## Subcommands
-
-### details — title, description, stats, channel, thumbnails
-
+## Quick start
 ```bash
-stophy video details --url "https://www.youtube.com/watch?v=h6ukrWyqOm4"
-stophy video details --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --json | jq -r '.data.title'
+# no login needed: find videos on a topic
+stophy youtube search "rust tutorial" --limit 10 -o .stophy/search.md
+
+# no login needed: read what a video actually says
+stophy youtube transcript dQw4w9WgXcQ -o .stophy/transcript.md
+
+# see what viewers are saying
+stophy youtube comments dQw4w9WgXcQ --sort top --limit 50 -o .stophy/comments.md
+
+# a creator's recent uploads or shorts
+stophy youtube channel @mkbhd --tab videos --limit 30 -o .stophy/channel.md
+
+# same idea on TikTok
+stophy tiktok posts khaby.lame --limit 30 -o .stophy/tiktok-posts.md
+
+# a live streamer's past broadcasts
+stophy kick videos xqc --limit 25 -o .stophy/kick-videos.md
 ```
+Run `stophy youtube --help`, `stophy tiktok --help`, or `stophy kick --help` for every command, and `stophy <source> <command> --help` for all options.
 
-Returns: `title`, `description`, `viewCount`, `likeCount`, `publishedAt`, `channel`, `thumbnails`.
+**Done when:** you quoted the parts of the transcript, comments, or listing that answer the question, alongside the video or channel URL.
 
-### transcript — timestamped captions
+## Tips
+- Accept both a bare video ID (`dQw4w9WgXcQ`) and a full URL for `video`/`transcript`/`comments`; either works.
+- Search first to get an ID, then call `video`, `transcript`, or `comments` on it; `youtube comments replies` and `tiktok comments replies` need a comment ID from the comments call first.
+- Page long results with `--cursor` from the previous call; save transcripts and comment lists with `-o` and read them in parts rather than pasting the whole thing into chat.
 
-```bash
-stophy video transcript --url "https://www.youtube.com/watch?v=h6ukrWyqOm4"
-stophy video transcript --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --json \
-  | jq -r '.data.segments[].text'
-```
-
-Returns: `language`, `segments[]` with `text`, `start`, `duration`. If captions are
-disabled, say so directly — do not invent a transcript. For long transcripts, summarize
-or save the structured output instead of flooding the response.
-
-### comments — threaded comments, sorted top or latest
-
-```bash
-stophy video comments --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --sortBy top
-stophy video comments --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --sortBy latest
-stophy video comments --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --continuation-token <token>
-```
-
-Returns `comments[]` with `text`, `author`, `likeCount`, `publishedAt`, `repliesToken`.
-Group by theme with representative quotes; frame findings as "comments surfaced by the
-API", not "all viewers". Preserve `repliesToken` for thread drill-down.
-
-### replies — replies to one comment thread
-
-```bash
-stophy video replies --continuation-token <repliesToken>
-```
-
-Pass the `repliesToken` from a comment to load its thread. No `--url` needed.
-
-### livechat — live-stream chat + stream status
-
-```bash
-stophy video livechat --url "https://www.youtube.com/watch?v=h6ukrWyqOm4"               # top chat (moderated, default)
-stophy video livechat --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --chat-type live   # every message
-stophy video livechat --url "https://www.youtube.com/watch?v=h6ukrWyqOm4" --continuation-token <token>
-```
-
-Returns: `status` (`live`, `upcoming`, `replay`, `chat_disabled`, `not_live`), `isLive`,
-`concurrentViewers`, `pollIntervalMs`, `messages[]` (`text`, `author`, `isOwner`,
-`isModerator`, `isVerified`, `superChatAmount`), and `continuationToken`.
-
-- Only `status: "live"` returns messages and a token. For other states, report the stream
-  state instead of expecting messages.
-- To follow chat, repeat with the returned `continuationToken`, waiting `pollIntervalMs`
-  between calls. Stop when the token is `null` (each call spends credits).
-- An empty `messages` array on a live stream just means nothing new — keep polling.
-- Highlight Super Chats and moderator/owner messages when summarizing.
-
-## Options
-
-| Option | Applies to | Values |
-|--------|-----------|--------|
-| `--url <url>` | details, transcript, comments, livechat | YouTube video URL (required) |
-| `--sortBy <sort>` | comments | `top`, `latest` |
-| `--chat-type <type>` | livechat | `top`, `live` (set on first call, kept after) |
-| `--continuation-token <token>` | comments, replies, livechat | pagination/poll token |
-| `--json` | all | raw JSON for piping/parsing |
-
-## Output guidance
-
-- For a human answer, summarize the important fields; preserve the video URL and channel.
-- Suggest the next concrete command when a follow-up is likely (transcript → comments, etc.).
-
-## Related skills
-
-- [stophy-search](../stophy-search/SKILL.md) — find candidate videos first
-- [stophy-channel](../stophy-channel/SKILL.md) — the creator's full channel
-- [stophy-playlist](../stophy-playlist/SKILL.md) — collect videos from a playlist
-- [stophy-cli](../stophy-cli/SKILL.md) — setup, auth, credits, full command map
+## See also
+- [stophy](../stophy/SKILL.md): setup, errors, and reporting a problem
+- [stophy-social](../stophy-social/SKILL.md): posts on Reddit, X, Instagram, and other platforms
+- [stophy-ads](../stophy-ads/SKILL.md): TikTok's ad library

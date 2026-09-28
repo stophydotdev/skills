@@ -1,11 +1,16 @@
 {
   "name": "stophy-skills",
   "skills": [
-    "./stophy-cli",
-    "./stophy-search",
-    "./stophy-suggest",
+    "./stophy",
+    "./stophy-web",
     "./stophy-video",
-    "./stophy-channel",
-    "./stophy-playlist"
+    "./stophy-social",
+    "./stophy-places",
+    "./stophy-shopping",
+    "./stophy-apps",
+    "./stophy-jobs",
+    "./stophy-real-estate",
+    "./stophy-ads",
+    "./stophy-finance"
   ]
 }
