@@ -57,6 +57,16 @@ Output is markdown. Add `--json` for exact fields and `-o file` to save the outp
 - **Rate limited or source failed:** wait for any delay the message gives, then retry once. Do not loop.
 - **Invalid input:** read the command's `--help`.
 
+## Report a problem
+
+If a result is wrong or a command acts differently from its help, report it once. Rerun the same command with `--raw` to see the `requestId`, then send:
+
+```bash
+curl -X POST https://api.stophy.dev/v1/feedback -H "Authorization: Bearer $STOPHY_API_KEY" -H "content-type: application/json" -d '{"category":"wrong_data","requestId":"<requestId>","note":"..."}'
+```
+
+Over MCP, call `stophy_feedback`. Reports are free. Never put a key or personal data in the note.
+
 ## Without the CLI
 
 - **MCP:** connect to `https://api.stophy.dev/mcp` and send `Authorization: Bearer <key>`. To sign in through the browser instead, connect to `https://api.stophy.dev/mcp-oauth`.
