@@ -41,7 +41,7 @@ Run `stophy <source> --help` for every command. The sources are `reddit`, `insta
 ## Tips
 
 - Use `profile` or `search` to find a person or topic, and `post` for one item with its replies. An Instagram profile returns its recent posts in `results`, and `posts` is its post count. Use `--limit` and `--cursor` for the next page.
-- Reddit costs 2 credits per call. Every other command here costs 1.
+- `instagram profile` costs 2 credits per call. Every other command here costs 1, including Reddit.
 - `linkedin posts` takes `--profile <p>` for a person or `--company <c>` for a company. It returns only the few posts LinkedIn shows publicly.
 - `reddit search --type users` returns one page and no cursor.
 - For replies to an Instagram comment, pass the comment's `repliesCursor` as `--comment` to `instagram comments`.

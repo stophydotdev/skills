@@ -45,7 +45,7 @@ Run `stophy <source> --help` for every command. The sources here are `youtube`, 
 
 ## Tips
 
-- `transcript` takes a YouTube, TikTok, or Instagram link, or a bare YouTube video ID. It costs 2 credits. Add `--includeTimestamps` for each line with its time. TikTok videos over 3 minutes are refused, and a refused call is free.
+- `transcript` takes a YouTube, TikTok, or Instagram link, or a bare YouTube video ID. It costs 2 credits. Every other video command costs 1. Add `--includeTimestamps` for each line with its time. TikTok videos over 3 minutes are refused, and a refused call is free.
 - `youtube video` and `youtube comments` accept a bare video ID (`dQw4w9WgXcQ`) or a full URL.
 - Replies: each comment has a `repliesCursor`. Pass it as `--comment` to `youtube comments` or `tiktok comments` to get that comment's replies.
 - A TikTok profile returns its videos in `results`, a page at a time. Use `--limit` and `--cursor` for the next page.

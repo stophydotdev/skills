@@ -36,7 +36,7 @@ Run `stophy <source> --help` for every command. The sources here are `linkedin` 
 ## Tips
 
 - Search first to get a job ID or link, then run `job` on it for the full description and requirements.
-- `upwork search` costs 2 credits per call. `upwork job` and `linkedin jobs` cost 1.
+- `upwork search` and `linkedin jobs search` cost 3 credits per call. `upwork job` and `linkedin jobs job` cost 1.
 - LinkedIn jobs live under `linkedin jobs`. `linkedin posts` and `linkedin profile` cover people and companies, and belong to stophy-social.
 
 ## See also

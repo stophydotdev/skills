@@ -40,6 +40,7 @@ Run `stophy <source> --help` for every command. The sources here are `maps`, `ai
 ## Tips
 
 - `maps search` needs both `--query` and `--location`. `maps place` and `maps reviews` take the `placeId` from a search result, not the name.
+- `googletravel flights` costs 5 credits per call. `maps search` and `airbnb search` cost 3. Every other command here costs 1.
 - Run `airbnb calendar` on a listing to see which dates are open, then search with `--checkIn` and `--checkOut`.
 - `airbnb search` returns up to about 110 listings, 18 to a page. Use `--cursor` for the next page. It returns `nights` and `pricePerNight`. `price` is the whole stay including fees, while `--minPrice` and `--maxPrice` are nightly rates before fees.
 - `googletravel flights` takes `--cabin`, `--adults` and an optional `--returnDate`. Results show `cabin` and `tripType`. `price` is the total for all adults, both directions.
